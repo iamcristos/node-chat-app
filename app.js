@@ -16,21 +16,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 io.on('connection', (socket)=>{
     console.log('connected');
 
-    socket.emit('newEmail',{
-        from:'cristos@gmail.com',
-        text:'Hello there',
-        createdAt:12345
-    });
-    socket.emit('newMessage',{
-        from:'2@gmail.com',
-        text:'Hello am here',
-        createdAt:1234567
-    });
+    // socket.emit('newEmail',{
+    //     from:'cristos@gmail.com',
+    //     text:'Hello there',
+    //     createdAt:12345
+    // });
+    // socket.emit('newMessage',{
+    //     from:'2@gmail.com',
+    //     text:'Hello am here',
+    //     createdAt:1234567
+    // });
     socket.on('creatEmail',(data)=>{
         console.log('creat email',data)
     });
     socket.on('creatMessage',(message)=>{
         console.log('creat message',message)
+        io.emit('newMessage', {
+            from: message.from,
+            text:message.text,
+            createdAt:new Date().getTime()
+        })
     })
 
     socket.on('disconnect', ()=>{
